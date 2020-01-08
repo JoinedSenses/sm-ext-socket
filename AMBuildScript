@@ -27,6 +27,7 @@ class ExtensionConfig(object):
     self.extensions = []
     self.sm_root = None
     self.mms_root = None
+    self.boost_root = None
 
   @property
   def tag(self):
@@ -58,6 +59,10 @@ class ExtensionConfig(object):
         self.mms_root = ResolveEnvPath('MMSOURCE', 'metamod-source')
       if not self.mms_root:
         self.mms_root = ResolveEnvPath('MMSOURCE_DEV', 'mmsource-central')
+
+  def detectBoost(self):
+    if builder.options.boost_path:
+      self.boost_root = builder.options.boost_path
 
   def configure(self):
     cxx = builder.DetectCompilers()
@@ -156,13 +161,14 @@ class ExtensionConfig(object):
       '_CRT_SECURE_NO_WARNINGS',
       '_CRT_NONSTDC_NO_DEPRECATE',
       '_ITERATOR_DEBUG_LEVEL=0',
+      '_WIN32_WINNT=0x0601',
     ]
     cxx.cflags += [
       '/W3',
     ]
     cxx.cxxflags += [
       '/EHsc',
-      '/GR-',
+      # '/GR-', # boost needs RTTI enabled
       '/TP',
     ]
     cxx.linkflags += [
@@ -180,6 +186,9 @@ class ExtensionConfig(object):
       'odbc32.lib',
       'odbccp32.lib',
     ]
+
+    # setup boost libraries
+    cxx.linkflags += ['/LIBPATH:"' + os.path.join(self.boost_root, 'stage', 'x86', 'lib') + '"']
 
     if builder.options.opt == '1':
       cxx.cflags += ['/Ox', '/Zo']
@@ -224,6 +233,7 @@ class ExtensionConfig(object):
       os.path.join(self.sm_root, 'sourcepawn', 'include'),
       os.path.join(self.sm_root, 'public', 'amtl', 'amtl'),
       os.path.join(self.sm_root, 'public', 'amtl'),
+      os.path.join(self.boost_root)
     ]
     return compiler
 
@@ -235,6 +245,7 @@ class ExtensionConfig(object):
 Extension = ExtensionConfig()
 Extension.detectMetaMod()
 Extension.detectSourceMod()
+Extension.detectBoost()
 Extension.configure()
 
 # Add additional buildscripts here
