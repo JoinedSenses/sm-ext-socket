@@ -205,7 +205,10 @@ class ExtensionConfig(object):
     cxx.defines += ['_LINUX', 'POSIX']
     
     # link flags based off of socket Makefile
-    cxx.linkflags += ['-lpthread', '-Wl,-Bstatic', '-lm', '-lboost_thread', '-lboost_system', '-lstdc++', '-Wl,-Bdynamic']
+    cxx.linkflags += ['-lpthread', '-Wl,-Bstatic', '-lm', '-lstdc++']
+    cxx.linkflags += ['-L', os.path.join(self.boost_root, 'stage', 'x86', 'lib')]
+    cxx.linkflags += ['-lboost_thread']
+    cxx.linkflags += ['-Wl,-Bdynamic']
     if cxx.vendor == 'gcc':
       cxx.linkflags += ['-static-libgcc']
     elif cxx.vendor == 'clang':
