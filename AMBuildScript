@@ -26,7 +26,6 @@ class ExtensionConfig(object):
   def __init__(self):
     self.extensions = []
     self.sm_root = None
-    self.mms_root = None
     self.boost_root = None
 
   @property
@@ -50,19 +49,11 @@ class ExtensionConfig(object):
 
     self.sm_root = Normalize(self.sm_root)
 
-  def detectMetaMod(self):
-    if builder.options.mms_path:
-      self.mms_root = builder.options.mms_path
-    else:
-      self.mms_root = ResolveEnvPath('MMSOURCE110', 'mmsource-1.10')
-      if not self.mms_root:
-        self.mms_root = ResolveEnvPath('MMSOURCE', 'metamod-source')
-      if not self.mms_root:
-        self.mms_root = ResolveEnvPath('MMSOURCE_DEV', 'mmsource-central')
-
   def detectBoost(self):
     if builder.options.boost_path:
       self.boost_root = builder.options.boost_path
+    else:
+      raise Exception('Could not find a copy of Boost')
 
   def configure(self):
     cxx = builder.DetectCompilers()
@@ -246,7 +237,6 @@ class ExtensionConfig(object):
     return binary
 
 Extension = ExtensionConfig()
-Extension.detectMetaMod()
 Extension.detectSourceMod()
 Extension.detectBoost()
 Extension.configure()
