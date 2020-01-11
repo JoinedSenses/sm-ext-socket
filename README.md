@@ -15,7 +15,12 @@ This has been forked from [sfPlayer´s origin Git repository](http://player.to/g
 
 1. Configure Boost.
   - Download the release archive from the site and extract the archive to a location
-  `${BOOST_PATH}`.
+  `${BOOST_PATH}`.  Set that location as your working directory.
   - Run the `bootstrap` script for your platform to build `b2`.
-  - Invoke `b2 --build-dir=build/x86 address-model=32 --build-type=complete --with-thread --with-date_time --with-regex -link=static --stagedir=stage/x86`
-2. Run `configure.py --sm-path ${SM_PATH} --boost-path ${BOOST_PATH}`
+  - Invoke `b2 define=BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY address-model=32 link=static --build-dir=build/x86 --build-type=complete --stagedir=stage/x86 --with-thread --with-date_time --with-regex`
+  to build the required libraries in mixed RTTI mode (boost will use RTTI, the extension will
+  not).
+    - If an existing build is present with a different configuration, use `-a` to force
+    rebuilding the libraries.
+2. `cd build/` and run `../configure.py --sm-path ${SM_PATH} --boost-path ${BOOST_PATH}`
+3. `ambuild` as normal.
