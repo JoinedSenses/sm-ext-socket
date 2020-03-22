@@ -623,7 +623,7 @@ native int SocketGetHostName(char[] dest, int destLen);
 /**
  * _________________Do not edit below this line!_______________________
  */
-public Extension __ext_smsock = 
+public Extension __ext_socket = 
 {
 	name = "Socket",
 	file = "socket.ext",
@@ -638,3 +638,39 @@ public Extension __ext_smsock =
 	required = 0,
 #endif
 };
+
+#if !defined REQUIRE_EXTENSIONS
+public void __ext_socket_SetNTVOptional()
+{
+	MarkNativeAsOptional("Socket.Socket");
+	MarkNativeAsOptional("Socket.Bind");
+	MarkNativeAsOptional("Socket.Connect");
+	MarkNativeAsOptional("Socket.Disconnect");
+	MarkNativeAsOptional("Socket.Listen");
+	MarkNativeAsOptional("Socket.Send");
+	MarkNativeAsOptional("Socket.SendTo");
+	MarkNativeAsOptional("Socket.SetOption");
+	MarkNativeAsOptional("Socket.SetReceiveCallback");
+	MarkNativeAsOptional("Socket.SetSendqueueEmptyCallback");
+	MarkNativeAsOptional("Socket.SetDisconnectCallback");
+	MarkNativeAsOptional("Socket.SetErrorCallback");
+	MarkNativeAsOptional("Socket.SetArg");
+	MarkNativeAsOptional("Socket.GetHostName");
+	MarkNativeAsOptional("Socket.Connected.get");
+	MarkNativeAsOptional("SocketIsConnected");
+	MarkNativeAsOptional("SocketCreate");
+	MarkNativeAsOptional("SocketBind");
+	MarkNativeAsOptional("SocketConnect");
+	MarkNativeAsOptional("SocketDisconnect");
+	MarkNativeAsOptional("SocketListen");
+	MarkNativeAsOptional("SocketSend");
+	MarkNativeAsOptional("SocketSendTo");
+	MarkNativeAsOptional("SocketSetOption");
+	MarkNativeAsOptional("SocketSetReceiveCallback");
+	MarkNativeAsOptional("SocketSetSendqueueEmptyCallback");
+	MarkNativeAsOptional("SocketSetDisconnectCallback");
+	MarkNativeAsOptional("SocketSetErrorCallback");
+	MarkNativeAsOptional("SocketSetArg");
+	MarkNativeAsOptional("SocketGetHostName");
+}
+#endif
